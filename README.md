@@ -1,1 +1,1 @@
-# full-stack-stusying
+# full-stack-studying
