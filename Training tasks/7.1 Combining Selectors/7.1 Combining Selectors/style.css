@@ -6,3 +6,11 @@ h1, h2 {
 div > p {
     color:firebrick;
 }
+
+.box li {
+    color:blue;
+}
+
+li.done{
+    color: green;
+}
