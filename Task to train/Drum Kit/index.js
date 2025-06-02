@@ -2,7 +2,7 @@
 let numberOfDrumButton = document.querySelectorAll("button.drum").length;
 let arrayOfDrumButton = document.querySelectorAll("button.drum");
 for(let i = 0; i<numberOfDrumButton; i++)
-arrayOfDrumButton[i].addEventListener("click", function(){
+    arrayOfDrumButton[i].addEventListener("click", function(){
     let buttonHTML = this.innerHTML;
     (letterButton[buttonHTML] || (() => console.log(buttonHTML)))();
     buttonAnimtion(buttonHTML);
