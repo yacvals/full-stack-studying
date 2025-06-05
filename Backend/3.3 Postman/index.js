@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
-  let data = req;
+  console.log("THIS IS REQUEST:"+req.query.userName+"THE END OF REQUEST");
   res.sendStatus(201);
 });
 
