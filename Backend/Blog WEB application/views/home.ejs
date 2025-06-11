@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesia</title>
+</head>
+<body>
+
+    <h1>This is your blog</h1>
+    <h2>You can write here anything</h2>
+    <form action="/post", method="post">
+        <textarea name="text" class="post-input" placeholder="Write your thoughts"></textarea>
+        <input type="submit" value="POST" />
+    </form>
+    
+    <% if(locals.postArray){ 
+        for(let i = 0; i < postArray.length; i++){    %>
+            
+        <p>  
+            <%= postArray[i] %> <br>
+        </p>
+
+    </form>
+
+
+    <button id = "<%= i %>" class ="edit">Edit</button>
+
+    <% }} %>
+
+
+</body>
+</html>
+
+
+
