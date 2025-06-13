@@ -30,7 +30,9 @@ app.post("/", async (req, res) => {
      let i = Math.floor(response.data.length * Math.random());
     res.render("index.ejs",{data: response.data[i]});
   }catch(error){
-    res.render("index.ejs",{error: error});
+    res.render("index.ejs",{
+      error: "No activities that match your criteria."
+    });
 
 
   }
