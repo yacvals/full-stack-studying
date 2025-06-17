@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joke</title>
+</head>
+<body>
+    <% if(locals.jokeStart){ %>
+        <h1>    <%= jokeStart %></h1>
+        <% if(locals.jokeEnd){ %>
+            <h2 id="joke-end" style="display: none;"> <%= jokeEnd %> </h2>
+    <%}}%>
+    <script>
+                setTimeout(() => {
+                    document.getElementById('joke-end').style.display = 'block';
+                }, 5000);
+    </script>
+
+</body>
+</html>
