@@ -57,42 +57,43 @@
 ---
 
 ## 📁 Структура проєкту
+```text
+full-stack-studying/Backend/6.2 Refractored Blog API/
 ├── src/
-│ ├── repositories/
-│ │ ├── PostRepository.js # Абстрактний репозиторій
-│ │ └── InMemoryPostRepository.js # Конкретна реалізація
-│ ├── validation/
-│ │ ├── PostValidationStrategy.js # Абстрактна стратегія
-│ │ ├── BasicPostValidation.js # Базова валідація
-│ │ └── StrictPostValidation.js # Сувора валідація
-│ ├── factories/
-│ │ └── ResponseFactory.js # Фабрика відповідей
-│ ├── services/
-│ │ └── PostService.js # Сервісний шар
-│ ├── utils/
-│ │ └── Logger.js # Утиліти логування
-│ └── app.js # Основний Express додаток
+│   ├── repositories/
+│   │   ├── PostRepository.js          # Абстрактний репозиторій
+│   │   └── InMemoryPostRepository.js  # Конкретна реалізація
+│   ├── validation/
+│   │   ├── PostValidationStrategy.js  # Абстрактна стратегія
+│   │   ├── BasicPostValidation.js     # Базова валідація
+│   │   └── StrictPostValidation.js    # Сувора валідація
+│   ├── factories/
+│   │   └── ResponseFactory.js         # Фабрика відповідей
+│   ├── services/
+│   │   └── PostService.js             # Сервісний шар
+│   ├── utils/
+│   │   └── Logger.js                  # Утиліти логування
+│   └── app.js                         # Основний Express додаток
 ├── frontend/
-│ ├── adapters/
-│ │ └── ApiAdapter.js # Адаптер для API
-│ ├── handlers/
-│ │ └── RequestHandler.js # Обробник запитів
-│ ├── factories/
-│ │ └── ViewDataFactory.js # Фабрика даних для view
-│ ├── commands/
-│ │ ├── GetAllPostsCommand.js
-│ │ ├── GetPostByIdCommand.js
-│ │ ├── CreatePostCommand.js
-│ │ ├── UpdatePostCommand.js
-│ │ └── DeletePostCommand.js
-│ ├── views/
-│ │ ├── index.ejs
-│ │ ├── modify.ejs
-│ │ └── error.ejs
-│ └── server.js # Frontend сервер
+│   ├── adapters/
+│   │   └── ApiAdapter.js              # Адаптер для API
+│   ├── handlers/
+│   │   └── RequestHandler.js          # Обробник запитів
+│   ├── factories/
+│   │   └── ViewDataFactory.js         # Фабрика даних для view
+│   ├── commands/
+│   │   ├── GetAllPostsCommand.js
+│   │   ├── GetPostByIdCommand.js
+│   │   ├── CreatePostCommand.js
+│   │   ├── UpdatePostCommand.js
+│   │   └── DeletePostCommand.js
+│   ├── views/
+│   │   ├── index.ejs
+│   │   ├── modify.ejs
+│   │   └── error.ejs
+│   └── server.js                      # Frontend сервер
 ├── package.json
 └── README.md
-
 ---
 
 ## 🚀 Запуск
