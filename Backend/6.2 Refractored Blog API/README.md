@@ -94,10 +94,11 @@ full-stack-studying/Backend/6.2 Refractored Blog API/
 │   └── server.js                      # Frontend сервер
 ├── package.json
 └── README.md
----
+```
 
 ## 🚀 Запуск
 
 ```bash
 npm install
 node src/app.js
+```
