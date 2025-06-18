@@ -1,92 +1,58 @@
-import express from "express";
-import bodyParser from "body-parser";
-
-import { InMemoryPostRepository } from './repositories/InMemoryPostRepository.js';
-import { BasicPostValidation, StrictPostValidation } from './validation/PostValidationStrategy.js';
-import { PostService } from './services/PostService.js';
-
-const app = express();
-const port = 4000;
-
+import http from "http";
+import { PostService } from "./services/PostService.js";
+import { InMemoryPostRepository } from "./repositories/InMemoryPostRepository.js";
+import { BasicPostValidation, StrictPostValidation } from "./validation/index.js";
+import { Logger } from "./utils/Logger.js";
 
 const repository = new InMemoryPostRepository();
+const postService = new PostService(repository, new BasicPostValidation());
+postService.publisher.addObserver(Logger); // якщо є спостерігач
 
-const postService = new PostService(
-    repository, 
-    new BasicPostValidation()
-);
+const server = http.createServer(async (req, res) => {
+  const { url, method } = req;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+  let body = "";
+  req.on("data", chunk => body += chunk);
+  await new Promise(r => req.on("end", r));
 
-// jump to strict mode
-app.use('/posts/strict', (req, res, next) => {
-    postService.setValidationStrategy(new StrictPostValidation());
-    next();
-});
-
-
-app.get("/posts", (req, res) => {
-    const result = postService.getAllPosts();
-    res.json(result);
-});
-
-app.get("/posts/:id", (req, res) => {
-    const id = parseInt(req.params.id);
-    const result = postService.getPostById(id);
-    
-    if (!result.success && result.statusCode === 404) {
-        return res.status(404).json(result);
+  try {
+    if (method === "GET" && url === "/posts") {
+      const result = postService.getAllPosts();
+      res.writeHead(200, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify(result));
     }
-    
-    res.json(result);
-});
 
-app.post("/posts", (req, res) => {
-    const result = postService.createPost(req.body);
-    
-    if (!result.success) {
-        return res.status(result.statusCode).json(result);
+    const idMatch = url.match(/^\/posts\/(\d+)$/);
+    if (method === "GET" && idMatch) {
+      const result = postService.getPostById(+idMatch[1]);
+      return res.writeHead(result.success ? 200 : 404, { "Content-Type": "application/json" }) && res.end(JSON.stringify(result));
     }
-    
-    res.status(201).json(result);
-});
 
-// strict route
-app.post("/posts/strict", (req, res) => {
-    const result = postService.createPost(req.body);
-    
-    if (!result.success) {
-        return res.status(result.statusCode).json(result);
+    if (method === "POST" && url === "/posts") {
+      const data = JSON.parse(body);
+      const result = postService.createPost(data);
+      return res.writeHead(result.success ? 201 : result.statusCode, { "Content-Type": "application/json" }) && res.end(JSON.stringify(result));
     }
-    
-    res.status(201).json(result);
-});
 
-app.patch("/posts/:id", (req, res) => {
-    const id = parseInt(req.params.id);
-    const result = postService.updatePost(id, req.body);
-    
-    if (!result.success) {
-        return res.status(result.statusCode).json(result);
+    if (method === "PATCH" && idMatch) {
+      const data = JSON.parse(body);
+      const result = postService.updatePost(+idMatch[1], data);
+      return res.writeHead(result.success ? 200 : result.statusCode, { "Content-Type": "application/json" }) && res.end(JSON.stringify(result));
     }
-    
-    res.json(result);
-});
 
-app.delete("/posts/:id", (req, res) => {
-    const id = parseInt(req.params.id);
-    const result = postService.deletePost(id);
-    
-    if (!result.success) {
-        return res.status(result.statusCode).json(result);
+    if (method === "DELETE" && idMatch) {
+      const result = postService.deletePost(+idMatch[1]);
+      return res.writeHead(result.success ? 200 : result.statusCode, { "Content-Type": "application/json" }) && res.end(JSON.stringify(result));
     }
-    
-    res.status(200).json(result);
+
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ success: false, message: "Not Found" }));
+
+  } catch (err) {
+    console.error(err);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ success: false, message: "Internal Server Error" }));
+  }
 });
 
-app.listen(port, () => {
-    console.log(`API is running at http://localhost:${port}`);
-});
-
-export default app;
+server.listen(4000, () => console.log("Backend running on http://localhost:4000"));
