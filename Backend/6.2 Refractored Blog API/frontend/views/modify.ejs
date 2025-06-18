@@ -10,29 +10,33 @@
 
 <body>
   <div class="container">
-    <h1>
-      <%= heading %>
-    </h1>
+    <h1><%= heading %></h1>
+
+    <% if (errors && errors.length > 0) { %>
+      <div class="error-box">
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error %></li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } %>
 
     <% if (locals.post) { %>
-      <form id="editForm" method="post" action="/api/posts/<%=post.id%>">
-        <input type="text" name="title" value="<%=post.title %>">
-        <textarea name="content" rows="10"><%=post.content %></textarea>
-        <input type="text" name="author" value="<%=post.author %>">
-        <button class="full-width" type="submit">
-          <%= submit %>
-        </button>
+      <form id="editForm" method="post" action="/api/posts/<%= post.id %>">
+        <input type="text" name="title" value="<%= post.title %>">
+        <textarea name="content" rows="10"><%= post.content %></textarea>
+        <input type="text" name="author" value="<%= post.author %>">
+        <button class="full-width" type="submit"><%= submit %></button>
       </form>
-      <% } else {%>
-        <form id="newPostForm" method="post" action="/api/posts">
-          <input type="text" name="title" placeholder="Title" required>
-          <textarea name="content" placeholder="Content" required rows="10"></textarea>
-          <input type="text" name="author" placeholder="Author" required>
-          <button class="full-width" type="submit">
-            <%= submit %>
-          </button>
-        </form>
-        <% } %>
+    <% } else { %>
+      <form id="newPostForm" method="post" action="/api/posts">
+        <input type="text" name="title" placeholder="Title" value="<%= oldData?.title || '' %>" required>
+        <textarea name="content" placeholder="Content" rows="10" required><%= oldData?.content || '' %></textarea>
+        <input type="text" name="author" placeholder="Author" value="<%= oldData?.author || '' %>" required>
+        <button class="full-width" type="submit"><%= submit %></button>
+      </form>
+    <% } %>
 
   </div>
 </body>
